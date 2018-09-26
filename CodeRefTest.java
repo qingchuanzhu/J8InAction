@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.*;
 
 class Apple {
 	private String color = "";
@@ -25,9 +26,7 @@ class Apple {
 	public String toString() {
 		return color +" apple";
 	}
-}
 
-class CodeRefTest {
 	public static List<Apple> fileterGreenApples(List<Apple> inventory) {
 		List<Apple> result = new ArrayList<>();
 		for (Apple apple : inventory) {
@@ -48,14 +47,36 @@ class CodeRefTest {
 		return result;	
 	}
 
+	public static boolean isGreenApple(Apple apple) {
+		return "green".equals(apple.getColor());
+	}
+
+	public static boolean isHeavyApple(Apple apple) {
+		return apple.getWeight() > 150;
+	}
+
+	public static List<Apple> filterApples(List<Apple> inventory, Predicate<Apple> p) {
+		List<Apple> result = new ArrayList<>();
+		for (Apple apple : inventory) {
+			if (p.test(apple)) {
+				result.add(apple);
+			}
+		}
+		return result;
+	}
+}
+
+class CodeRefTest {
 	public static void main(String[] args) {
 		ArrayList<Apple> apples = new ArrayList<>();
 		apples.add(new Apple("green", 134));
 		apples.add(new Apple("red", 149));
 		apples.add(new Apple("blue", 187));
 
-		List<Apple> result = fileterGreenApples(apples);
-		List<Apple> result2 = filterHeavyApples(apples);
+		// List<Apple> result = fileterGreenApples(apples);
+		// List<Apple> result2 = filterHeavyApples(apples);
+		List result = Apple.filterApples(apples, Apple::isGreenApple);
+		List result2 = Apple.filterApples(apples, Apple::isHeavyApple);
 		System.out.println(result);
 		System.out.println(result2);
 	}
