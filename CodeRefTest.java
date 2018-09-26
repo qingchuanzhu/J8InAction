@@ -79,5 +79,10 @@ class CodeRefTest {
 		List result2 = Apple.filterApples(apples, Apple::isHeavyApple);
 		System.out.println(result);
 		System.out.println(result2);
+		System.out.println("Results by using Lambda");
+		result = Apple.filterApples(apples, (Apple a) -> "green".equals(a.getColor()));
+		result2 = Apple.filterApples(apples, (Apple a) -> a.getWeight() > 150);
+		System.out.println(result);
+		System.out.println(result2);
 	}
 }
