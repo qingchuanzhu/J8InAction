@@ -27,20 +27,20 @@ class Apple {
 		return color +" apple";
 	}
 
-	public static List<Apple> fileterGreenApples(List<Apple> inventory) {
+	public static List<Apple> fileterApplesByColor(List<Apple> inventory, String color) {
 		List<Apple> result = new ArrayList<>();
 		for (Apple apple : inventory) {
-			if ("green".equals(apple.getColor())) {
+			if (color.equals(apple.getColor())) {
 				result.add(apple);
 			}
 		}
 		return result;
 	}
 
-	public static List<Apple> filterHeavyApples(List<Apple> inventory) {
+	public static List<Apple> filterApplesByWeight(List<Apple> inventory, double weight) {
 		List<Apple> result = new ArrayList<>();
 		for (Apple apple : inventory) {
-			if (apple.getWeight() > 150) {
+			if (apple.getWeight() > weight) {
 				result.add(apple);
 			}
 		}
