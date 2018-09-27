@@ -32,8 +32,16 @@ class PrettyPrintAppleTest {
 		apples.add(new Apple("blue", 187));
 
 		System.out.println("Printing first style...");
-		prettyPrintApple(apples, new AppleWeightPrinter());
+		prettyPrintApple(apples, new PrettyPrintApple(){
+			public String prettyPrint(Apple a) {
+				return "Apple weights " + a.getWeight();
+			}
+		});
 		System.out.println("Printing second style...");
-		prettyPrintApple(apples, new AppleWeightPrinter2());
+		prettyPrintApple(apples, new PrettyPrintApple(){
+			public String prettyPrint(Apple a) {
+				return a.getWeight() > 150 ? "Heavy Apple" : "Light Apple";
+			}	
+		});
 	}
 }
