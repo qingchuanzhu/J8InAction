@@ -43,5 +43,8 @@ class PrettyPrintAppleTest {
 				return a.getWeight() > 150 ? "Heavy Apple" : "Light Apple";
 			}	
 		});
+
+		System.out.println("Printing second style using Lambda...");
+		prettyPrintApple(apples, (Apple a) -> a.getWeight() > 150 ? "Heavy Apple" : "Light Apple");
 	}
 }
