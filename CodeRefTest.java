@@ -19,7 +19,7 @@ class Apple {
 		return color;
 	}
 
-	double getWeight() {
+	Double getWeight() {
 		return weight;
 	}
 
