@@ -23,8 +23,19 @@ class Apple {
 		return weight;
 	}
 
+	void setWeight(double w) {
+		this.weight = w;
+	}
+
+	void setColor(String c) {
+		this.color = c;
+	}
+
 	public String toString() {
-		return color +" apple";
+		return "Apple{" + 
+			   "color='" + color + '\'' + 
+			   ", weight=" + weight +
+			   '}';
 	}
 
 	public static List<Apple> fileterApplesByColor(List<Apple> inventory, String color) {
