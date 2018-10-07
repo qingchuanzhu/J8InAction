@@ -107,5 +107,38 @@ class StreamTaste {
 		for (int[] pair : permutationBy3) {
 			System.out.println("[" + pair[0] + "," + pair[1] + "]");
 		}
+
+		// 5.3.1 anyMatch
+		if (Dish.menu.stream().anyMatch(Dish::isVegetarian)) {
+			System.out.println("The menu is (somewhat) vegetarian friendly!!");
+		}
+
+		// 5.3.2 allMatch
+		Optional<Dish> dishOfVege = Dish.menu.stream()
+											.filter(Dish::isVegetarian)
+											.findAny();
+		dishOfVege.ifPresent(d -> System.out.println(d));
+
+		// 5.3.4 findFirst
+		Optional<Integer> firstSquareDivisbleByThree = Arrays.asList(1,2,3,4,5).stream()
+																				.map(x -> x*x)
+																				.filter(d -> d%3 == 0)
+																				.findFirst();
+		firstSquareDivisbleByThree.ifPresent(a -> System.out.println(a));
+
+		// 5.4.1 Summing the elements
+		int sum = numbers.stream().reduce(0, (a, b) -> a + b);
+		sum = numbers.stream().reduce(0, Integer::sum);
+		System.out.println("The sum of numbers is = " + sum);
+
+		// 5.4.2 Maximum and minimum
+		Optional<Integer> max = numbers.stream().reduce(Integer::max);
+		System.out.println("The max is: " + max);
+
+		// Quiz 5.3
+		Optional<Integer> numberOfDishes = Dish.menu.stream()
+													.map(d -> 1)
+													.reduce(Integer::sum);
+		System.out.println("Quiz 5.3: number of dishes is " + numberOfDishes);
 	}
 }
