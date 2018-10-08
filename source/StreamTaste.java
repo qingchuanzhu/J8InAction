@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.*;
 import static java.util.stream.Collectors.toList;
 
 class StreamTaste {
@@ -140,5 +141,20 @@ class StreamTaste {
 													.map(d -> 1)
 													.reduce(Integer::sum);
 		System.out.println("Quiz 5.3: number of dishes is " + numberOfDishes);
+
+		// 5.6.1 Primitive Stream
+		int calories = Dish.menu.stream()
+								.mapToInt(Dish::getCalories)
+								.sum();
+		// 5.7.4 Infinite Stream
+		Stream.iterate(0, n -> n + 3)
+			  .limit(10)
+			  .forEach(System.out::println);
+
+		// Quiz 5.4 Fibonacci tuples series
+
+		Stream.iterate(new int[]{0, 1}, t -> new int[]{t[1], t[0] + t[1]})
+			  .limit(20)
+			  .forEach(t -> System.out.println("(" + t[0] + "," + t[1] + ")"));
 	}
 }
