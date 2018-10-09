@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.stream.*;
+import java.util.function.*;
 import static java.util.stream.Collectors.toList;
 
 class StreamTaste {
@@ -156,5 +157,19 @@ class StreamTaste {
 		Stream.iterate(new int[]{0, 1}, t -> new int[]{t[1], t[0] + t[1]})
 			  .limit(20)
 			  .forEach(t -> System.out.println("(" + t[0] + "," + t[1] + ")"));
+
+		// 5.7.4 Using Generate
+		IntStream.generate(new IntSupplier(){
+					int prev1 = 0;
+					int prev2 = 1;
+					public int getAsInt() {
+						int current = prev1 + prev2;
+						prev1 = prev2;
+						prev2 = current;
+						return current;
+					}
+				})
+			  .limit(20)
+			  .forEach(System.out::println);
 	}
 }
