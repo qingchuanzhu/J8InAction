@@ -83,5 +83,11 @@ class CollectorTest {
 													.collect(partitioningBy(Dish::isVegetarian));
 		System.out.println("Partitioning Menu:");
 		System.out.println(partitionedMenu);
+
+		// 6.5 Collector Interface
+		List<Dish> myDish = Dish.menu.stream()
+									 .collect(new ToListCollector<Dish>());
+		System.out.println("List of Dishes collected by custom Collector:");
+		System.out.println(myDish);
 	}
 }
