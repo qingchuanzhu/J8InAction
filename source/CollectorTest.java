@@ -77,5 +77,11 @@ class CollectorTest {
 															));
 		System.out.println("Caloric Level in each type:");
 		System.out.println(caloricLevelsByType);
+
+		// 6.4 Partitioning
+		Map<Boolean, List<Dish>> partitionedMenu = Dish.menu.stream()
+													.collect(partitioningBy(Dish::isVegetarian));
+		System.out.println("Partitioning Menu:");
+		System.out.println(partitionedMenu);
 	}
 }
