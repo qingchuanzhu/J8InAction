@@ -22,4 +22,10 @@ class ParallelStream {
 					 .parallel()
 					 .reduce(0L, Long::sum);
 	}
+
+	static long rangedSum(long n) {
+		return LongStream.rangeClosed(1, n)
+						 .parallel()
+						 .reduce(0L, Long::sum);
+	}
 }

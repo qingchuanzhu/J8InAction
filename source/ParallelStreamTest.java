@@ -21,5 +21,7 @@ class ParallelStreamTest {
 			measureSumPerf(ParallelStream::iterativeSum, 10_000_000) + " msecs");
 		System.out.println("Parallel sum done in: " +
 			measureSumPerf(ParallelStream::parallelSum, 10_000_000) + " msecs");
+		System.out.println("LongStream range sum done in: " +
+			measureSumPerf(ParallelStream::rangedSum, 10_000_000) + " msecs");
 	}
 }
