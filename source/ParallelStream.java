@@ -28,4 +28,21 @@ class ParallelStream {
 						 .parallel()
 						 .reduce(0L, Long::sum);
 	}
+
+	static long sideEffectSum(long n) {
+		Accumulator acc = new Accumulator();
+		LongStream.rangeClosed(1, n).forEach(acc::add);
+		return acc.total;
+	}
+
+	static long sideEffectParallelSum(long n) {
+		Accumulator acc = new Accumulator();
+		LongStream.rangeClosed(1, n).parallel().forEach(acc::add);
+		return acc.total;
+	}
+}
+
+class Accumulator {
+	long total = 0;
+	void add(long value) { total += value; }
 }

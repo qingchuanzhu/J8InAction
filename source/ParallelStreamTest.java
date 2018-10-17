@@ -7,6 +7,7 @@ class ParallelStreamTest {
 			long start = System.nanoTime();
 			long sum = adder.apply(n);
 			long duration = (System.nanoTime() - start) / 1_000_000;
+			System.out.println("Result: " + sum);
 			if (duration < fastest) {
 				fastest = duration;
 			}
@@ -23,5 +24,9 @@ class ParallelStreamTest {
 			measureSumPerf(ParallelStream::parallelSum, 10_000_000) + " msecs");
 		System.out.println("LongStream range sum done in: " +
 			measureSumPerf(ParallelStream::rangedSum, 10_000_000) + " msecs");
+		System.out.println("Side Effect sum no parallel in: " +
+			measureSumPerf(ParallelStream::sideEffectSum, 10_000_000) + " msecs");
+		System.out.println("Side Effect parallel sum no parallel in: " +
+			measureSumPerf(ParallelStream::sideEffectParallelSum, 10_000_000) + " msecs");
 	}
 }
