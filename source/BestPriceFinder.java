@@ -12,11 +12,12 @@ class BestPriceFinder {
 									);
 
 	List<String> findPrices(String product) {
-		return shops.stream().map(
+		return shops.parallelStream().map(
 								shop -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product))
 							  ).collect(toList());
 	}	
 
+	// The API used on Shop is a sync/blocking API
 	void goSync() {
 		long start = System.nanoTime();
 		System.out.println(findPrices("myPhone27S"));
@@ -24,6 +25,7 @@ class BestPriceFinder {
 		System.out.println("Done in " + duration + " msec");
 	}
 
+	// The API used on Shop is a async/non-blocking API
 	void goAsync() {
 		Shop shop = new Shop();
 		long start = System.nanoTime();
