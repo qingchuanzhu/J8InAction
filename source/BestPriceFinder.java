@@ -1,8 +1,30 @@
 import java.util.concurrent.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.*;
 import java.util.*;
 
 class BestPriceFinder {
-	public static void main(String[] args) {
+
+	List<Shop> shops = Arrays.asList(new Shop("BestPrice"),
+									 new Shop("LetsSaveBig"),
+									 new Shop("MyFavoriteShop"),
+									 new Shop("BuyItAll")
+									);
+
+	List<String> findPrices(String product) {
+		return shops.stream().map(
+								shop -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product))
+							  ).collect(toList());
+	}	
+
+	void goSync() {
+		long start = System.nanoTime();
+		System.out.println(findPrices("myPhone27S"));
+		long duration = (System.nanoTime() - start) / 1_000_000;
+		System.out.println("Done in " + duration + " msec");
+	}
+
+	void goAsync() {
 		Shop shop = new Shop();
 		long start = System.nanoTime();
 		Future<Double> futurePrice = shop.getPriceAsync("My favoriate product");
@@ -24,5 +46,9 @@ class BestPriceFinder {
 
 		long retrivelTime = (System.nanoTime() - start) / 1_000_000;
 		System.out.println("Price returned after " + retrivelTime + " msecs");
+	}
+
+	public static void main(String[] args) {
+		new BestPriceFinder().goSync();
 	}
 }
