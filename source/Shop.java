@@ -1,8 +1,20 @@
 import java.util.*;
+import java.util.concurrent.*;
 
 class Shop {
 	double getPrice(String product) {
 		return calculatePrice(product);
+	}
+
+	Future<Double> getPriceAsync(String product) {
+		CompletableFuture<Double> futurePrice = new CompletableFuture<>();
+		new Thread(
+			() -> {
+				double price = calculatePrice(product);
+				futurePrice.complete(price);
+			}
+		).start();
+		return futurePrice;
 	}
 
 	// simulate 1-s delay
