@@ -2,8 +2,22 @@ import java.util.*;
 import java.util.concurrent.*;
 
 class Shop {
+	private final String shopName;
+
+	Shop(String name) {
+		shopName = name;
+	}
+
+	Shop() {
+		shopName = "Anonymous Shop";
+	}
+
 	double getPrice(String product) {
 		return calculatePrice(product);
+	}
+
+	String getName() {
+		return shopName;
 	}
 
 	Future<Double> getPriceAsync(String product) {
