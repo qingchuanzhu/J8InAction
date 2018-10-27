@@ -12,9 +12,20 @@ class BestPriceFinder {
 									);
 
 	List<String> findPrices(String product) {
+		/**
+		Without Future
 		return shops.parallelStream().map(
 								shop -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product))
 							  ).collect(toList());
+		*/
+
+		List<CompletableFuture<String>> priceFutures = shops.stream().map(
+			shop -> CompletableFuture.supplyAsync(
+					() -> shop.getName() + " price is " + shop.getPrice(product)
+				)
+			).collect(toList());
+
+		return priceFutures.stream().map(CompletableFuture::join).collect(toList());
 	}	
 
 	// The API used on Shop is a sync/blocking API
