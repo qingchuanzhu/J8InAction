@@ -3,6 +3,7 @@ import java.util.concurrent.*;
 
 class Shop {
 	private final String shopName;
+	private final Random random = new Random();
 
 	Shop(String name) {
 		shopName = name;
@@ -12,8 +13,10 @@ class Shop {
 		shopName = "Anonymous Shop";
 	}
 
-	double getPrice(String product) {
-		return calculatePrice(product);
+	String getPrice(String product) {
+		double price = calculatePrice(product);
+		Discount.Code code = Discount.Code.values()[random.nextInt(Discount.Code.values().length)];
+		return String.format("%s:%.2f:%s", shopName, price, code);
 	}
 
 	String getName() {
@@ -42,7 +45,6 @@ class Shop {
 
 	private double calculatePrice(String product) {
 		delay();
-		Random random = new Random();
 		return random.nextDouble() * product.charAt(0) + product.charAt(1);
 	}
 }
