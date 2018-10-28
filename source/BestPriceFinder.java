@@ -8,8 +8,21 @@ class BestPriceFinder {
 	List<Shop> shops = Arrays.asList(new Shop("BestPrice"),
 									 new Shop("LetsSaveBig"),
 									 new Shop("MyFavoriteShop"),
-									 new Shop("BuyItAll")
+									 new Shop("BuyItAll"),
+									 new Shop("LetsSaveBig2"),
+									 new Shop("MyFavoriteShop2"),
+									 new Shop("BuyItAll2")
 									);
+
+	// create an Executor
+	private final Executor executor = Executors.newFixedThreadPool(Math.min(shops.size(), 100),
+							new ThreadFactory() {
+								public Thread newThread(Runnable r) {
+									Thread t = new Thread(r);
+									t.setDaemon(true);
+									return t;
+								}
+							});
 
 	List<String> findPrices(String product) {
 		/**
@@ -19,9 +32,12 @@ class BestPriceFinder {
 							  ).collect(toList());
 		*/
 
+		
+
+
 		List<CompletableFuture<String>> priceFutures = shops.stream().map(
 			shop -> CompletableFuture.supplyAsync(
-					() -> shop.getName() + " price is " + shop.getPrice(product)
+					() -> shop.getName() + " price is " + shop.getPrice(product), executor
 				)
 			).collect(toList());
 
