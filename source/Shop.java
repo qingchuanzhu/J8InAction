@@ -3,7 +3,7 @@ import java.util.concurrent.*;
 
 class Shop {
 	private final String shopName;
-	private final Random random = new Random();
+	private static final Random random = new Random();
 
 	Shop(String name) {
 		shopName = name;
@@ -43,8 +43,17 @@ class Shop {
 		}
 	}
 
+	static void randomDelay() {
+		int delay = 500 + random.nextInt(2000);
+		try {
+			Thread.sleep(delay);
+		} catch(InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private double calculatePrice(String product) {
-		delay();
+		randomDelay();
 		return random.nextDouble() * product.charAt(0) + product.charAt(1);
 	}
 }
