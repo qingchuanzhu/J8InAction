@@ -25,23 +25,29 @@ class BestPriceFinder {
 							});
 
 	List<String> findPrices(String product) {
-		/**
-		Without Future
-		return shops.parallelStream().map(
-								shop -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product))
-							  ).collect(toList());
-		*/
-
 		
+		/*
+		//Without Future
+		return shops.parallelStream()
+					 .map(shop -> shop.getPrice(product))
+					 .map(Quote::parse)
+					 .map(Discount::applyDiscount)
+					 .collect(toList());
+		*/						
 
-
-		List<CompletableFuture<String>> priceFutures = shops.stream().map(
-			shop -> CompletableFuture.supplyAsync(
-					() -> shop.getName() + " price is " + shop.getPrice(product), executor
-				)
-			).collect(toList());
+ 		
+		List<CompletableFuture<String>> priceFutures = shops.stream()
+				.map(shop -> CompletableFuture.supplyAsync(
+						() -> shop.getPrice(product), executor
+					))
+				.map(future -> future.thenApply(Quote::parse))
+				.map(future -> future.thenCompose(quote -> 
+					CompletableFuture.supplyAsync(
+						() -> Discount.applyDiscount(quote), executor)))
+				.collect(toList());
 
 		return priceFutures.stream().map(CompletableFuture::join).collect(toList());
+		
 	}	
 
 	// The API used on Shop is a sync/blocking API

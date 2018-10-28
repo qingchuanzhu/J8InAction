@@ -8,6 +8,24 @@ class Discount {
 			this.percentage = percentage;
 		}
 	}
+
+	static String applyDiscount(Quote quote) {
+		return quote.getShopName() + " price is " + Discount.apply(quote.getPrice(), quote.getDiscountCode());
+	}
+
+	private static double apply(double price, Code code) {
+		delay();
+		return (price * (100 - code.percentage) / 100);
+	}
+
+	// simulate 1-s delay
+	static void delay() {
+		try {
+			Thread.sleep(1000L);
+		} catch(InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
 
 class Quote {
