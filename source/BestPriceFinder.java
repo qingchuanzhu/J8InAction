@@ -48,7 +48,18 @@ class BestPriceFinder {
 
 		return priceFutures.stream().map(CompletableFuture::join).collect(toList());
 		
-	}	
+	}
+
+	Stream<CompletableFuture<String>> findPricesStream(String product) {
+		return shops.stream()
+				.map(shop -> CompletableFuture.supplyAsync(
+						() -> shop.getPrice(product), executor
+					))
+				.map(future -> future.thenApply(Quote::parse))
+				.map(future -> future.thenCompose(quote -> 
+					CompletableFuture.supplyAsync(
+						() -> Discount.applyDiscount(quote), executor)));
+	}
 
 	// The API used on Shop is a sync/blocking API
 	void goSync() {
@@ -56,6 +67,17 @@ class BestPriceFinder {
 		System.out.println(findPrices("myPhone27S"));
 		long duration = (System.nanoTime() - start) / 1_000_000;
 		System.out.println("Done in " + duration + " msec");
+	}
+
+	// The API used on Shop is a sync/blocking API
+	void goSyncReactive() {
+		long start = System.nanoTime();
+		CompletableFuture[] futures = findPricesStream("myPhone27S")
+								.map(f -> f.thenAccept(
+									s -> System.out.println(s + " (done in " + (System.nanoTime() - start) / 1_000_000 + " msecs")))
+								.toArray(size -> new CompletableFuture[size]);
+		CompletableFuture.allOf(futures).join();
+		System.out.println("All shops have now responsed in " + (System.nanoTime() - start) / 1_000_000 + " msecs");
 	}
 
 	// The API used on Shop is a async/non-blocking API
@@ -84,6 +106,6 @@ class BestPriceFinder {
 	}
 
 	public static void main(String[] args) {
-		new BestPriceFinder().goSync();
+		new BestPriceFinder().goSyncReactive();
 	}
 }
